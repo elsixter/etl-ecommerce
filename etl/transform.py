@@ -403,3 +403,103 @@ payments_clean.to_csv(
 )
 
 print("\nArchivo order_payments_clean.csv guardado correctamente.")
+
+# ============================================================
+# 12. ANALISIS - ORDER REVIEWS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("ANALISIS - ORDER REVIEWS")
+print(f"{'=' * 60}")
+
+reviews = pd.read_csv(
+    DATA_DIR / "olist_order_reviews_dataset.csv"
+)
+
+print("\nFilas:")
+print(len(reviews))
+
+print("\nValores nulos:")
+print(reviews.isnull().sum())
+
+print("\nPorcentaje de nulos:")
+print(
+    (reviews.isnull().mean() * 100).round(2)
+)
+
+print("\nDuplicados exactos:")
+print(reviews.duplicated().sum())
+
+print("\nTipos de datos:")
+print(reviews.dtypes)
+
+print("\nDistribución de calificaciones:")
+
+print(
+    reviews["review_score"].value_counts()
+    .sort_index()
+)
+
+# ============================================================
+# 13. TRANSFORMACION - ORDER REVIEWS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("TRANSFORMACION - ORDER REVIEWS")
+print(f"{'=' * 60}")
+
+reviews_clean = reviews.copy()
+
+# Convertir fechas
+reviews_clean["review_creation_date"] = pd.to_datetime(
+    reviews_clean["review_creation_date"],
+    errors="coerce"
+)
+
+reviews_clean["review_answer_timestamp"] = pd.to_datetime(
+    reviews_clean["review_answer_timestamp"],
+    errors="coerce"
+)
+
+# Crear categoría de calificación
+def clasificar_review(score):
+    if score <= 2:
+        return "Negativa"
+    elif score == 3:
+        return "Neutral"
+    else:
+        return "Positiva"
+
+
+reviews_clean["review_category"] = (
+    reviews_clean["review_score"]
+    .apply(clasificar_review)
+)
+
+print("\nEjemplo de datos transformados:")
+
+print(
+    reviews_clean[
+        [
+            "order_id",
+            "review_score",
+            "review_category",
+            "review_creation_date",
+            "review_answer_timestamp"
+        ]
+    ].head()
+)
+
+print("\nDistribución de categorías:")
+
+print(
+    reviews_clean["review_category"].value_counts()
+)
+
+# Guardar datos transformados
+reviews_clean.to_csv(
+    "data/processed/order_reviews_clean.csv",
+    index=False
+)
+
+print("\nArchivo order_reviews_clean.csv guardado correctamente.")
