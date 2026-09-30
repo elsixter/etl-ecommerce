@@ -650,3 +650,71 @@ sellers_clean.to_csv(
 )
 
 print("\nArchivo sellers_clean.csv guardado correctamente.")
+
+# ============================================================
+# 18. ANALISIS - PRODUCT CATEGORY TRANSLATION
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("18. ANALISIS - PRODUCT CATEGORY TRANSLATION")
+print(f"{'=' * 60}")
+
+categories = pd.read_csv(
+    DATA_DIR / "product_category_name_translation.csv"
+)
+
+print("\nFilas:")
+print(len(categories))
+
+print("\nValores nulos:")
+print(categories.isnull().sum())
+
+print("\nDuplicados exactos:")
+print(categories.duplicated().sum())
+
+print("\nTipos de datos:")
+print(categories.dtypes)
+
+print("\nCategorías únicas:")
+print(
+    categories["product_category_name"].nunique()
+)
+
+print("\nEjemplo de categorías:")
+print(
+    categories.head(10)
+)
+
+# ============================================================
+# 19. TRANSFORMACION - PRODUCT CATEGORY TRANSLATION
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("19. TRANSFORMACION - PRODUCT CATEGORY TRANSLATION")
+print(f"{'=' * 60}")
+
+categories_clean = categories.rename(
+    columns={
+        "product_category_name": "category_name",
+        "product_category_name_english": "category_name_english"
+    }
+)
+
+print("\nColumnas después de la transformación:")
+print(list(categories_clean.columns))
+
+print("\nValores nulos:")
+print(categories_clean.isnull().sum())
+
+print("\nCategorías únicas:")
+print(categories_clean["category_name"].nunique())
+
+categories_clean.to_csv(
+    "data/processed/product_category_translation_clean.csv",
+    index=False
+)
+
+print(
+    "\nArchivo product_category_translation_clean.csv "
+    "guardado correctamente."
+)
