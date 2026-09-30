@@ -128,3 +128,56 @@ print(
         "order_status"
     ].value_counts()
 )
+
+# ============================================================
+# 5. ANALISIS DE NULOS - PRODUCTS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("ANALISIS DE NULOS - PRODUCTS")
+print(f"{'=' * 60}")
+
+products = pd.read_csv(
+    DATA_DIR / "olist_products_dataset.csv"
+)
+
+print("\nValores nulos por columna:")
+
+print(
+    products.isnull().sum()
+)
+
+print("\nPorcentaje de nulos por columna:")
+
+print(
+    (products.isnull().mean() * 100).round(2)
+)
+
+# ============================================================
+# 6. TRANSFORMACION - PRODUCTS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("TRANSFORMACION - PRODUCTS")
+print(f"{'=' * 60}")
+
+products_clean = products.rename(
+    columns={
+        "product_name_lenght": "product_name_length",
+        "product_description_lenght": "product_description_length"
+    }
+)
+
+print("\nColumnas después de la transformación:")
+print(list(products_clean.columns))
+
+print("\nValores nulos conservados:")
+print(products_clean.isnull().sum())
+
+# Guardar datos transformados
+products_clean.to_csv(
+    "data/processed/products_clean.csv",
+    index=False
+)
+
+print("\nArchivo products_clean.csv guardado correctamente.")
