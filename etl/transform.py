@@ -181,3 +181,46 @@ products_clean.to_csv(
 )
 
 print("\nArchivo products_clean.csv guardado correctamente.")
+
+# ============================================================
+# 7. TRANSFORMACION - ORDERS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("TRANSFORMACION - ORDERS")
+print(f"{'=' * 60}")
+
+orders_clean = orders.copy()
+
+orders_clean["order_purchase_year"] = (
+    orders_clean["order_purchase_timestamp"].dt.year
+)
+
+orders_clean["order_purchase_month"] = (
+    orders_clean["order_purchase_timestamp"].dt.month
+)
+
+orders_clean["order_purchase_date"] = (
+    orders_clean["order_purchase_timestamp"].dt.date
+)
+
+print("\nNuevas columnas creadas:")
+
+print(
+    orders_clean[
+        [
+            "order_purchase_timestamp",
+            "order_purchase_year",
+            "order_purchase_month",
+            "order_purchase_date"
+        ]
+    ].head()
+)
+
+# Guardar datos transformados
+orders_clean.to_csv(
+    "data/processed/orders_clean.csv",
+    index=False
+)
+
+print("\nArchivo orders_clean.csv guardado correctamente.")
