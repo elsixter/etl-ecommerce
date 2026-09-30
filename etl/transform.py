@@ -577,3 +577,76 @@ customers_clean.to_csv(
 )
 
 print("\nArchivo customers_clean.csv guardado correctamente.")
+
+# ============================================================
+# 16. ANALISIS - SELLERS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("16. ANALISIS - SELLERS")
+print(f"{'=' * 60}")
+
+sellers = pd.read_csv(
+    DATA_DIR / "olist_sellers_dataset.csv"
+)
+
+print("\nFilas:")
+print(len(sellers))
+
+print("\nValores nulos:")
+print(sellers.isnull().sum())
+
+print("\nDuplicados exactos:")
+print(sellers.duplicated().sum())
+
+print("\nTipos de datos:")
+print(sellers.dtypes)
+
+print("\nVendedores únicos:")
+print(sellers["seller_id"].nunique())
+
+print("\nCiudades principales:")
+print(
+    sellers["seller_city"]
+    .value_counts()
+    .head(10)
+)
+
+print("\nEstados:")
+print(
+    sellers["seller_state"]
+    .value_counts()
+)
+
+# ============================================================
+# 17. TRANSFORMACION - SELLERS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("17. TRANSFORMACION - SELLERS")
+print(f"{'=' * 60}")
+
+sellers_clean = sellers.rename(
+    columns={
+        "seller_id": "seller_id",
+        "seller_zip_code_prefix": "seller_zip_code",
+        "seller_city": "seller_city",
+        "seller_state": "seller_state"
+    }
+)
+
+print("\nColumnas después de la transformación:")
+print(list(sellers_clean.columns))
+
+print("\nValores nulos:")
+print(sellers_clean.isnull().sum())
+
+print("\nVendedores únicos:")
+print(sellers_clean["seller_id"].nunique())
+
+sellers_clean.to_csv(
+    "data/processed/sellers_clean.csv",
+    index=False
+)
+
+print("\nArchivo sellers_clean.csv guardado correctamente.")
