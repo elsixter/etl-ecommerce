@@ -26,7 +26,6 @@ for archivo in DATA_DIR.glob("*.csv"):
     print("\nTipos de datos:")
     print(df.dtypes)
 
-
 # ============================================================
 # 2. ANALISIS ESPECIFICO DE GEOLOCATION
 # ============================================================
@@ -39,6 +38,13 @@ geo = pd.read_csv(
     DATA_DIR / "olist_geolocation_dataset.csv"
 )
 
+print("\nTotal de filas:")
+print(len(geo))
+
+print("\nFilas duplicadas exactas:")
+print(geo.duplicated().sum())
+
+# Eliminar únicamente duplicados exactos
 geo_limpio = geo.drop_duplicates()
 
 print("\nFilas después de eliminar duplicados:")
@@ -46,12 +52,6 @@ print(len(geo_limpio))
 
 print("\nDuplicados restantes:")
 print(geo_limpio.duplicated().sum())
-
-print("\nTotal de filas:")
-print(len(geo))
-
-print("\nFilas duplicadas exactas:")
-print(geo.duplicated().sum())
 
 print("\nEjemplo de duplicados:")
 
@@ -66,6 +66,14 @@ print(
     ])
     .head(20)
 )
+
+# Guardar datos transformados
+geo_limpio.to_csv(
+    "data/processed/geolocation_clean.csv",
+    index=False
+)
+
+print("\nArchivo procesado guardado correctamente.")
 
 # ============================================================
 # 3. CONVERSION DE FECHAS
