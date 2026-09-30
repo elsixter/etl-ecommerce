@@ -314,3 +314,92 @@ order_items_clean.to_csv(
 )
 
 print("\nArchivo order_items_clean.csv guardado correctamente.")
+
+# ============================================================
+# 10. ANALISIS - ORDER PAYMENTS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("ANALISIS - ORDER PAYMENTS")
+print(f"{'=' * 60}")
+
+payments = pd.read_csv(
+    DATA_DIR / "olist_order_payments_dataset.csv"
+)
+
+print("\nFilas:")
+print(len(payments))
+
+print("\nValores nulos:")
+print(payments.isnull().sum())
+
+print("\nDuplicados exactos:")
+print(payments.duplicated().sum())
+
+print("\nTipos de datos:")
+print(payments.dtypes)
+
+print("\nTipos de pago:")
+print(payments["payment_type"].value_counts())
+
+print("\nEstadísticas de payment_value:")
+print(payments["payment_value"].describe())
+
+print("\nEstadísticas de payment_installments:")
+print(payments["payment_installments"].describe())
+
+# ============================================================
+# 11. TRANSFORMACION - ORDER PAYMENTS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("TRANSFORMACION - ORDER PAYMENTS")
+print(f"{'=' * 60}")
+
+payments_clean = payments.copy()
+
+payment_type_description = {
+    "credit_card": "Tarjeta de crédito",
+    "boleto": "Boleto",
+    "voucher": "Voucher",
+    "debit_card": "Tarjeta de débito",
+    "not_defined": "No definido"
+}
+
+payments_clean["payment_type_description"] = (
+    payments_clean["payment_type"]
+    .map(payment_type_description)
+)
+
+print("\nEjemplo de datos transformados:")
+
+print(
+    payments_clean[
+        [
+            "order_id",
+            "payment_type",
+            "payment_type_description",
+            "payment_installments",
+            "payment_value"
+        ]
+    ].head()
+)
+
+print("\nTipos de pago después de la transformación:")
+
+print(
+    payments_clean[
+        [
+            "payment_type",
+            "payment_type_description"
+        ]
+    ].drop_duplicates()
+)
+
+# Guardar datos transformados
+payments_clean.to_csv(
+    "data/processed/order_payments_clean.csv",
+    index=False
+)
+
+print("\nArchivo order_payments_clean.csv guardado correctamente.")
