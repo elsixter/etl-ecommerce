@@ -224,3 +224,93 @@ orders_clean.to_csv(
 )
 
 print("\nArchivo orders_clean.csv guardado correctamente.")
+
+# ============================================================
+# 8. ANALISIS - ORDER ITEMS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("ANALISIS - ORDER ITEMS")
+print(f"{'=' * 60}")
+
+order_items = pd.read_csv(
+    DATA_DIR / "olist_order_items_dataset.csv"
+)
+
+print("\nFilas:")
+print(len(order_items))
+
+print("\nValores nulos:")
+print(order_items.isnull().sum())
+
+print("\nDuplicados exactos:")
+print(order_items.duplicated().sum())
+
+print("\nTipos de datos:")
+print(order_items.dtypes)
+
+print("\nValores estadísticos:")
+print(
+    order_items[
+        ["price", "freight_value"]
+    ].describe()
+)
+
+# ============================================================
+# 9. TRANSFORMACION - ORDER ITEMS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("TRANSFORMACION - ORDER ITEMS")
+print(f"{'=' * 60}")
+
+order_items_clean = order_items.copy()
+
+order_items_clean["shipping_limit_date"] = pd.to_datetime(
+    order_items_clean["shipping_limit_date"],
+    errors="coerce"
+)
+
+order_items_clean["shipping_limit_year"] = (
+    order_items_clean["shipping_limit_date"].dt.year
+)
+
+order_items_clean["shipping_limit_month"] = (
+    order_items_clean["shipping_limit_date"].dt.month
+)
+
+print("\nTipos de datos después de la transformación:")
+
+print(
+    order_items_clean[
+        [
+            "shipping_limit_date",
+            "shipping_limit_year",
+            "shipping_limit_month"
+        ]
+    ].dtypes
+)
+
+print("\nEjemplo de datos transformados:")
+
+print(
+    order_items_clean[
+        [
+            "order_id",
+            "product_id",
+            "price",
+            "freight_value",
+            "shipping_limit_date",
+            "shipping_limit_year",
+            "shipping_limit_month"
+        ]
+    ].head()
+)
+
+# Guardar datos transformados
+order_items_clean.to_csv(
+    "data/processed/order_items_clean.csv",
+    index=False
+)
+
+print("\nArchivo order_items_clean.csv guardado correctamente.")
