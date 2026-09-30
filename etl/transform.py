@@ -503,3 +503,77 @@ reviews_clean.to_csv(
 )
 
 print("\nArchivo order_reviews_clean.csv guardado correctamente.")
+
+# ============================================================
+# 14. ANALISIS - CUSTOMERS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("14. ANALISIS - CUSTOMERS")
+print(f"{'=' * 60}")
+
+customers = pd.read_csv(
+    DATA_DIR / "olist_customers_dataset.csv"
+)
+
+print("\nFilas:")
+print(len(customers))
+
+print("\nValores nulos:")
+print(customers.isnull().sum())
+
+print("\nDuplicados exactos:")
+print(customers.duplicated().sum())
+
+print("\nTipos de datos:")
+print(customers.dtypes)
+
+print("\nClientes únicos:")
+print(customers["customer_unique_id"].nunique())
+
+print("\nCiudades principales:")
+print(
+    customers["customer_city"]
+    .value_counts()
+    .head(10)
+)
+
+print("\nEstados:")
+print(
+    customers["customer_state"]
+    .value_counts()
+)
+
+# ============================================================
+# 15. TRANSFORMACION - CUSTOMERS
+# ============================================================
+
+print(f"\n{'=' * 60}")
+print("15. TRANSFORMACION - CUSTOMERS")
+print(f"{'=' * 60}")
+
+customers_clean = customers.rename(
+    columns={
+        "customer_id": "customer_id",
+        "customer_unique_id": "customer_unique_id",
+        "customer_zip_code_prefix": "customer_zip_code",
+        "customer_city": "customer_city",
+        "customer_state": "customer_state"
+    }
+)
+
+print("\nColumnas después de la transformación:")
+print(list(customers_clean.columns))
+
+print("\nValores nulos:")
+print(customers_clean.isnull().sum())
+
+print("\nClientes únicos:")
+print(customers_clean["customer_unique_id"].nunique())
+
+customers_clean.to_csv(
+    "data/processed/customers_clean.csv",
+    index=False
+)
+
+print("\nArchivo customers_clean.csv guardado correctamente.")
