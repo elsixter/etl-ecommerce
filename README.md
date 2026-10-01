@@ -40,29 +40,27 @@ Análisis SQL
 
 ## Estructura del proyecto
 
-```text
 etl-ecommerce/
-│
 ├── data/
-│   ├── raw/
-│   └── processed/
+│   ├── raw/                  # Datos originales CSV
+│   └── processed/            # Datos transformados
 │
 ├── etl/
-│   ├── extract.py
-│   ├── transform.py
-│   ├── load.py
-│   └── pipeline.py
+│   ├── extract.py            # Extracción de datos
+│   ├── transform.py          # Limpieza y transformación
+│   ├── load.py               # Carga al Data Warehouse
+│   └── pipeline.py           # Orquestación del ETL
 │
 ├── database/
 │   └── scripts/
-│       └── 02_analisis.sql
+│       ├── 01_dw_schema.sql  # Creación del Data Warehouse
+│       ├── 02_analisis.sql   # Consultas analíticas
+│       └── 03_views.sql      # Vistas analíticas
 │
 ├── notebooks/
-│
 ├── requirements.txt
-│
-└── README.md
-```
+├── README.md
+└── .gitignore
 
 ## Proceso ETL
 
@@ -103,5 +101,25 @@ El Data Warehouse utiliza un modelo dimensional tipo estrella.
 
 ## Data Warehouse
 
-La estructura principal está formada por
+El proyecto utiliza un modelo dimensional tipo estrella.
 
+### Tablas de dimensiones
+
+- `dw.dim_fecha`
+- `dw.dim_cliente`
+- `dw.dim_producto`
+- `dw.dim_vendedor`
+
+### Tabla de hechos
+
+- `dw.fact_ventas`
+
+La granularidad de `fact_ventas` es una línea de producto dentro de una orden.
+
+### Vistas analíticas
+
+- `dw.vw_ventas_mensuales`
+- `dw.vw_ventas_categoria`
+- `dw.vw_ventas_vendedor`
+- `dw.vw_ventas_cliente`
+- `dw.vw_ventas_producto`
