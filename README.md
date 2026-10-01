@@ -180,6 +180,21 @@ Estas consultas permiten analizar las ventas por periodo, categoría, vendedor, 
    pipeline.py
         ↓
 03_views.sql
+
+## Dataset
+
+Este proyecto utiliza el **Brazilian E-Commerce Public Dataset by Olist**.
+
+Los archivos CSV originales no se incluyen en este repositorio debido a su tamaño.
+
+El dataset puede descargarse desde Kaggle:
+
+https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce
+
+Una vez descargados, los archivos deben colocarse en:
+
+```text
+data/raw/
         ↓
 02_analisis.sql
 ```
