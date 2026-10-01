@@ -46,16 +46,16 @@ etl-ecommerce/
 │   └── processed/            # Datos transformados
 │
 ├── etl/
-│   ├── extract.py            # Extracción de datos
-│   ├── transform.py          # Limpieza y transformación
-│   ├── load.py               # Carga al Data Warehouse
-│   └── pipeline.py           # Orquestación del ETL
+│   ├── extract.py           
+│   ├── transform.py          
+│   ├── load.py               
+│   └── pipeline.py           
 │
 ├── database/
 │   └── scripts/
-│       ├── 01_dw_schema.sql  # Creación del Data Warehouse
-│       ├── 02_analisis.sql   # Consultas analíticas
-│       └── 03_views.sql      # Vistas analíticas
+│       ├── 01_dw_schema.sql  
+│       ├── 02_analisis.sql   
+│       └── 03_views.sql      
 │
 ├── notebooks/
 ├── requirements.txt
