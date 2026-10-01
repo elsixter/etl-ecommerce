@@ -3,8 +3,9 @@ from pathlib import Path
 
 DATA_DIR = Path("data/raw")
 
+
 # ============================================================
-# 1. ANALISIS GENERAL DE TODOS LOS ARCHIVOS
+# 1. ANALISIS GENERAL DE ARCHIVOS
 # ============================================================
 
 for archivo in DATA_DIR.glob("*.csv"):
@@ -26,12 +27,13 @@ for archivo in DATA_DIR.glob("*.csv"):
     print("\nTipos de datos:")
     print(df.dtypes)
 
+
 # ============================================================
-# 2. ANALISIS ESPECIFICO DE GEOLOCATION
+# 2. ANALISIS ESPECIFICO - GEOLOCATION
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS ESPECIFICO: GEOLOCATION")
+print("2. ANALISIS ESPECIFICO: GEOLOCATION")
 print(f"{'=' * 60}")
 
 geo = pd.read_csv(
@@ -44,7 +46,6 @@ print(len(geo))
 print("\nFilas duplicadas exactas:")
 print(geo.duplicated().sum())
 
-# Eliminar únicamente duplicados exactos
 geo_limpio = geo.drop_duplicates()
 
 print("\nFilas después de eliminar duplicados:")
@@ -67,7 +68,6 @@ print(
     .head(20)
 )
 
-# Guardar datos transformados
 geo_limpio.to_csv(
     "data/processed/geolocation_clean.csv",
     index=False
@@ -75,12 +75,13 @@ geo_limpio.to_csv(
 
 print("\nArchivo procesado guardado correctamente.")
 
+
 # ============================================================
-# 3. CONVERSION DE FECHAS
+# 3. TRANSFORMACION DE FECHAS - ORDERS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION DE FECHAS - ORDERS")
+print("3. TRANSFORMACION DE FECHAS - ORDERS")
 print(f"{'=' * 60}")
 
 orders = pd.read_csv(
@@ -102,15 +103,15 @@ for columna in columnas_fecha:
     )
 
 print("\nTipos de datos después de la transformación:")
-
 print(orders[columnas_fecha].dtypes)
 
+
 # ============================================================
-# 4. ANALISIS DE VALORES NULOS EN ORDERS
+# 4. ANALISIS DE NULOS - ORDERS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS DE NULOS - ORDERS")
+print("4. ANALISIS DE NULOS - ORDERS")
 print(f"{'=' * 60}")
 
 print("\nPedidos con fecha de entrega al cliente nula:")
@@ -121,7 +122,6 @@ print(
 )
 
 print("\nEstado de los pedidos con fecha de entrega nula:")
-
 print(
     orders.loc[
         orders["order_delivered_customer_date"].isnull(),
@@ -129,12 +129,13 @@ print(
     ].value_counts()
 )
 
+
 # ============================================================
 # 5. ANALISIS DE NULOS - PRODUCTS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS DE NULOS - PRODUCTS")
+print("5. ANALISIS DE NULOS - PRODUCTS")
 print(f"{'=' * 60}")
 
 products = pd.read_csv(
@@ -142,23 +143,20 @@ products = pd.read_csv(
 )
 
 print("\nValores nulos por columna:")
-
-print(
-    products.isnull().sum()
-)
+print(products.isnull().sum())
 
 print("\nPorcentaje de nulos por columna:")
-
 print(
     (products.isnull().mean() * 100).round(2)
 )
+
 
 # ============================================================
 # 6. TRANSFORMACION - PRODUCTS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION - PRODUCTS")
+print("6. TRANSFORMACION - PRODUCTS")
 print(f"{'=' * 60}")
 
 products_clean = products.rename(
@@ -174,7 +172,6 @@ print(list(products_clean.columns))
 print("\nValores nulos conservados:")
 print(products_clean.isnull().sum())
 
-# Guardar datos transformados
 products_clean.to_csv(
     "data/processed/products_clean.csv",
     index=False
@@ -182,12 +179,13 @@ products_clean.to_csv(
 
 print("\nArchivo products_clean.csv guardado correctamente.")
 
+
 # ============================================================
 # 7. TRANSFORMACION - ORDERS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION - ORDERS")
+print("7. TRANSFORMACION - ORDERS")
 print(f"{'=' * 60}")
 
 orders_clean = orders.copy()
@@ -205,7 +203,6 @@ orders_clean["order_purchase_date"] = (
 )
 
 print("\nNuevas columnas creadas:")
-
 print(
     orders_clean[
         [
@@ -217,7 +214,6 @@ print(
     ].head()
 )
 
-# Guardar datos transformados
 orders_clean.to_csv(
     "data/processed/orders_clean.csv",
     index=False
@@ -225,12 +221,13 @@ orders_clean.to_csv(
 
 print("\nArchivo orders_clean.csv guardado correctamente.")
 
+
 # ============================================================
 # 8. ANALISIS - ORDER ITEMS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS - ORDER ITEMS")
+print("8. ANALISIS - ORDER ITEMS")
 print(f"{'=' * 60}")
 
 order_items = pd.read_csv(
@@ -256,12 +253,13 @@ print(
     ].describe()
 )
 
+
 # ============================================================
 # 9. TRANSFORMACION - ORDER ITEMS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION - ORDER ITEMS")
+print("9. TRANSFORMACION - ORDER ITEMS")
 print(f"{'=' * 60}")
 
 order_items_clean = order_items.copy()
@@ -280,7 +278,6 @@ order_items_clean["shipping_limit_month"] = (
 )
 
 print("\nTipos de datos después de la transformación:")
-
 print(
     order_items_clean[
         [
@@ -292,7 +289,6 @@ print(
 )
 
 print("\nEjemplo de datos transformados:")
-
 print(
     order_items_clean[
         [
@@ -307,7 +303,6 @@ print(
     ].head()
 )
 
-# Guardar datos transformados
 order_items_clean.to_csv(
     "data/processed/order_items_clean.csv",
     index=False
@@ -315,12 +310,13 @@ order_items_clean.to_csv(
 
 print("\nArchivo order_items_clean.csv guardado correctamente.")
 
+
 # ============================================================
 # 10. ANALISIS - ORDER PAYMENTS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS - ORDER PAYMENTS")
+print("10. ANALISIS - ORDER PAYMENTS")
 print(f"{'=' * 60}")
 
 payments = pd.read_csv(
@@ -348,12 +344,13 @@ print(payments["payment_value"].describe())
 print("\nEstadísticas de payment_installments:")
 print(payments["payment_installments"].describe())
 
+
 # ============================================================
 # 11. TRANSFORMACION - ORDER PAYMENTS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION - ORDER PAYMENTS")
+print("11. TRANSFORMACION - ORDER PAYMENTS")
 print(f"{'=' * 60}")
 
 payments_clean = payments.copy()
@@ -372,7 +369,6 @@ payments_clean["payment_type_description"] = (
 )
 
 print("\nEjemplo de datos transformados:")
-
 print(
     payments_clean[
         [
@@ -386,7 +382,6 @@ print(
 )
 
 print("\nTipos de pago después de la transformación:")
-
 print(
     payments_clean[
         [
@@ -396,7 +391,6 @@ print(
     ].drop_duplicates()
 )
 
-# Guardar datos transformados
 payments_clean.to_csv(
     "data/processed/order_payments_clean.csv",
     index=False
@@ -404,12 +398,13 @@ payments_clean.to_csv(
 
 print("\nArchivo order_payments_clean.csv guardado correctamente.")
 
+
 # ============================================================
 # 12. ANALISIS - ORDER REVIEWS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("ANALISIS - ORDER REVIEWS")
+print("12. ANALISIS - ORDER REVIEWS")
 print(f"{'=' * 60}")
 
 reviews = pd.read_csv(
@@ -434,23 +429,22 @@ print("\nTipos de datos:")
 print(reviews.dtypes)
 
 print("\nDistribución de calificaciones:")
-
 print(
     reviews["review_score"].value_counts()
     .sort_index()
 )
+
 
 # ============================================================
 # 13. TRANSFORMACION - ORDER REVIEWS
 # ============================================================
 
 print(f"\n{'=' * 60}")
-print("TRANSFORMACION - ORDER REVIEWS")
+print("13. TRANSFORMACION - ORDER REVIEWS")
 print(f"{'=' * 60}")
 
 reviews_clean = reviews.copy()
 
-# Convertir fechas
 reviews_clean["review_creation_date"] = pd.to_datetime(
     reviews_clean["review_creation_date"],
     errors="coerce"
@@ -461,7 +455,7 @@ reviews_clean["review_answer_timestamp"] = pd.to_datetime(
     errors="coerce"
 )
 
-# Crear categoría de calificación
+
 def clasificar_review(score):
     if score <= 2:
         return "Negativa"
@@ -477,7 +471,6 @@ reviews_clean["review_category"] = (
 )
 
 print("\nEjemplo de datos transformados:")
-
 print(
     reviews_clean[
         [
@@ -491,18 +484,17 @@ print(
 )
 
 print("\nDistribución de categorías:")
-
 print(
     reviews_clean["review_category"].value_counts()
 )
 
-# Guardar datos transformados
 reviews_clean.to_csv(
     "data/processed/order_reviews_clean.csv",
     index=False
 )
 
 print("\nArchivo order_reviews_clean.csv guardado correctamente.")
+
 
 # ============================================================
 # 14. ANALISIS - CUSTOMERS
@@ -544,6 +536,7 @@ print(
     .value_counts()
 )
 
+
 # ============================================================
 # 15. TRANSFORMACION - CUSTOMERS
 # ============================================================
@@ -577,6 +570,7 @@ customers_clean.to_csv(
 )
 
 print("\nArchivo customers_clean.csv guardado correctamente.")
+
 
 # ============================================================
 # 16. ANALISIS - SELLERS
@@ -618,6 +612,7 @@ print(
     .value_counts()
 )
 
+
 # ============================================================
 # 17. TRANSFORMACION - SELLERS
 # ============================================================
@@ -650,6 +645,7 @@ sellers_clean.to_csv(
 )
 
 print("\nArchivo sellers_clean.csv guardado correctamente.")
+
 
 # ============================================================
 # 18. ANALISIS - PRODUCT CATEGORY TRANSLATION
@@ -685,6 +681,7 @@ print(
     categories.head(10)
 )
 
+
 # ============================================================
 # 19. TRANSFORMACION - PRODUCT CATEGORY TRANSLATION
 # ============================================================
@@ -718,3 +715,6 @@ print(
     "\nArchivo product_category_translation_clean.csv "
     "guardado correctamente."
 )
+
+
+
