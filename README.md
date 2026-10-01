@@ -123,3 +123,59 @@ La granularidad de `fact_ventas` es una línea de producto dentro de una orden.
 - `dw.vw_ventas_vendedor`
 - `dw.vw_ventas_cliente`
 - `dw.vw_ventas_producto`
+
+## Orden de ejecución
+
+Para ejecutar el proyecto desde cero se recomienda seguir el siguiente orden.
+
+### 1. Crear el esquema del Data Warehouse
+
+```bash
+psql -U JUAREZ -h localhost -p 5435 -d ecommerce_dw -f database/scripts/01_dw_schema.sql
+```
+
+Este script crea el esquema `dw`, las dimensiones y la tabla de hechos.
+
+### 2. Ejecutar el pipeline ETL
+
+Desde la raíz del proyecto:
+
+```bash
+python etl/pipeline.py
+```
+
+El pipeline ejecuta automáticamente:
+
+1. Extracción de los archivos CSV.
+2. Transformación y limpieza de los datos.
+3. Carga de las dimensiones y la tabla de hechos.
+
+### 3. Crear las vistas analíticas
+
+```bash
+psql -U JUAREZ -h localhost -p 5435 -d ecommerce_dw -f database/scripts/03_views.sql
+```
+
+Este script crea las vistas utilizadas para facilitar las consultas y análisis del Data Warehouse.
+
+### 4. Ejecutar análisis SQL
+
+Las consultas analíticas se encuentran en:
+
+```text
+database/scripts/02_analisis.sql
+```
+
+Estas consultas permiten analizar las ventas por periodo, categoría, vendedor, cliente, producto y estado.
+
+### Flujo general
+
+```text
+01_dw_schema.sql
+        ↓
+   pipeline.py
+        ↓
+03_views.sql
+        ↓
+02_analisis.sql
+```
